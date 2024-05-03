@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/output.css">
+    <title>Algoritma Kriptografi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        *{
+            font-family: "Poppins", sans-serif;
+        }
+
+        .btn{
+            background-color: aliceblue;
+        }
+        .btn:hover{
+            background-color:honeydew;
+        }
+        </style>
+        
+</head>
+<body>
+    <div class="flex items-center justify-center flex-col gap-10 m-10">
+        <!-- <div class="px-7 py-3 border-2 border-indigo-500 rounded-sm text-gray-500">
+            <h1>Identitas:</h1>
+            <h3>Nama: Yosep Adriana Fauzi Ramdani</h3>
+            <h3>NPM: 227006033</h3>
+            <h3>Kelas: B</h3>
+        </div> -->
+    
+    <div class="bg-white px-10 py-10 flex flex-col gap-5 border-2 border-indigo-500 rounded-md">
+        <h1 class="text-3xl text-indigo-500 font-bold">Encrypt and Decrypt Tool</h1>
+        <div class="flex flex-col gap-2">
+                <label for="message" class="text-gray-500">Masukan Pesan</label>
+                <textarea name="message" class="border-2 border-indigo-700 rounded-md px-2 py-1" id="message" placeholder="Aku mau makan batagor" cols="30" rows="3"></textarea>
+        </div> 
+
+        <div class="flex flex-col gap-2">
+            <label for="key" class="text-gray-500">Masukan Kunci</label>
+            <textarea name="key" class="border-2 border-indigo-700 rounded-md px-2 py-1" placeholder="Panjang kalimat tidak di tentukan" id="key" cols="30" rows="3"></textarea>
+        </div>
+
+            <div class="flex gap-5">
+            <button class="btn border-2 border-indigo-500 rounded-md px-3 py-1" onclick="encrypt()">Enkripsi</button>
+            <button class="btn border-2 border-indigo-500 rounded-md px-3 py-1" onclick="decrypt()">Dekripsi</button>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class=" text-gray-500" for="result">Hasil: </label>
+                <textarea class=" border-2 border-indigo-700 rounded-md px-2 py-1" name="result" id="result" cols="30" rows="3"></textarea>
+            </div>
+
+            <div class="btn border-2 border-indigo-500 rounded-md px-3 py-1 flex items-center justify-center">
+                <button onclick="saveCipherText()">Simpan Cipherteks</button>
+            </div>
+    </div>
+</div>
+    
+    <script>
+        function encrypt() {
+            const message = document.getElementById('message').value;
+            const key = document.getElementById('key').value;
+
+            const encryptedMessage = encryptMessage(message, key);
+            document.getElementById('result').value = `Cipherteks: ${encryptedMessage}`;
+
+        }
+
+        function decrypt() {
+            const encryptedMessage = document.getElementById('result').value.replace('Cipherteks: ', '');
+            const key = document.getElementById('key').value;
+
+            const decryptedMessage = decryptMessage(encryptedMessage, key);
+            document.getElementById('result').value = `Plainteks: ${decryptedMessage}`;
+        }
+
+        function encryptMessage(message, key) {
+            const encrypted = CryptoJS.AES.encrypt(message, key);
+            return encrypted.toString();
+        }
+
+        function decryptMessage(encryptMessage, key) {
+            const bytes = CryptoJS.AES.decrypt(encryptMessage, key);
+            const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+            return decrypted;
+        }
+
+        function saveCipherText() {
+            const cipherteks = document.getElementById('result').value.replace('Ciphertels: ', '');
+
+            const blob = new Blob([cipherteks], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'cipherteks.txt';
+            a.click();
+        }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>
